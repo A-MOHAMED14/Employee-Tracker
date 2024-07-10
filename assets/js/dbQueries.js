@@ -1,5 +1,6 @@
 const { Pool } = require("pg");
 const SqlQueries = require("./queries.js");
+const Table = require("cli-table3");
 
 const sql = new SqlQueries();
 
@@ -18,7 +19,16 @@ function showAllDepartments() {
     if (err) {
       console.error(err);
     } else {
-      console.log(result.rows);
+      const table = new Table({
+        head: ["id", "name"],
+        colwidth: [10, 30],
+      });
+
+      result.rows.forEach((row) => {
+        table.push([row.id, row.name]);
+      });
+
+      console.log(table.toString());
     }
   });
 }
@@ -29,7 +39,15 @@ function showAllRoles() {
     if (err) {
       console.error(err);
     } else {
-      console.log(result.rows);
+      const table = new Table({
+        head: ["id", "title", "department", "salary"],
+      });
+
+      result.rows.forEach((row) => {
+        table.push([row.id, row.title, row.department, row.salary]);
+      });
+
+      console.log(table.toString());
     }
   });
 }
@@ -40,7 +58,31 @@ function showAllEmployees() {
     if (err) {
       console.error(err);
     } else {
-      console.log(result.rows);
+      const table = new Table({
+        head: [
+          "employee_id",
+          "first_name",
+          "last_name",
+          "job_title",
+          "department",
+          "salary",
+          "manager_name",
+        ],
+      });
+
+      result.rows.forEach((row) => {
+        table.push([
+          row.employee_id,
+          row.first_name,
+          row.last_name,
+          row.job_title,
+          row.department,
+          row.salary,
+          row.manager_name,
+        ]);
+      });
+
+      console.log(table.toString());
     }
   });
 }
