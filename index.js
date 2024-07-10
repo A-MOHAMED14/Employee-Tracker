@@ -76,7 +76,15 @@ inquirer
             },
           ])
           .then((answer) => {
-            console.log("ANSWER:", answer.departmentName);
+            const query4 = sql.addDepartment();
+            const newDepartment = [answer.departmentName];
+            pool.query(query4, newDepartment, (err) => {
+              if (err) {
+                console.error(err);
+              } else {
+                console.log(`Added ${answer.departmentName} to the database`);
+              }
+            });
           });
         break;
 
@@ -94,18 +102,26 @@ inquirer
               message: "Enter the salary for this role:",
             },
             {
-              type: "input",
+              type: "name",
               name: "departmentId",
               message: "Enter the department ID for this role:",
             },
           ])
           .then((answer) => {
-            console.log(
-              "ANSWERS:",
+            const query5 = sql.addRole();
+            const newRole = [
               answer.roleName,
               answer.salary,
-              answer.departmentId
-            );
+              answer.departmentId,
+            ];
+
+            pool.query(query5, newRole, (err) => {
+              if (err) {
+                console.error(err);
+              } else {
+                console.log(`Added ${answer.roleName} to the database`);
+              }
+            });
           });
         break;
 
@@ -134,13 +150,23 @@ inquirer
             },
           ])
           .then((answer) => {
-            console.log(
-              "ANSWERS:",
+            const query6 = sql.addEmployee();
+            const newEmployee = [
               answer.firstName,
               answer.lastName,
               answer.roleId,
-              answer.managerId
-            );
+              answer.managerId,
+            ];
+
+            pool.query(query6, newEmployee, (err) => {
+              if (err) {
+                console.error(err);
+              } else {
+                console.log(
+                  `Added ${answer.firstName} ${answer.lastName} to the database`
+                );
+              }
+            });
           });
         break;
 
@@ -159,7 +185,16 @@ inquirer
             },
           ])
           .then((answer) => {
-            console.log("ANSWERS:", answer.employeeId, answer.roleName);
+            const query7 = sql.updateEmployee();
+            const updateData = [answer.employeeId, answer.roleName];
+
+            pool.query(query7, updateData, (err) => {
+              if (err) {
+                console.error(err);
+              } else {
+                console.log(`Updated employee's role`);
+              }
+            });
           });
         break;
 
