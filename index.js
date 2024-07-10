@@ -33,6 +33,39 @@ inquirer
   ])
   .then((response) => {
     switch (response.action) {
+      case "View all departments":
+        const query1 = sql.viewDepartments();
+        pool.query(query1, (err, result) => {
+          if (err) {
+            console.error(err);
+          } else {
+            console.log(result.rows);
+          }
+        });
+        break;
+
+      case "View all roles":
+        const query2 = sql.viewRoles();
+        pool.query(query2, (err, result) => {
+          if (err) {
+            console.error(err);
+          } else {
+            console.log(result.rows);
+          }
+        });
+        break;
+
+      case "View all employees":
+        const query3 = sql.viewEmployees();
+        pool.query(query3, (err, result) => {
+          if (err) {
+            console.error(err);
+          } else {
+            console.log(result.rows);
+          }
+        });
+        break;
+
       case "Add a department":
         inquirer
           .prompt([
