@@ -1,18 +1,123 @@
 const inquirer = require("inquirer");
 
-inquirer.prompt([
-  {
-    type: "list",
-    name: "mainMenu",
-    message: "What would you like to do?",
-    choices: [
-      "View all departments",
-      "View all roles",
-      "view all employees",
-      "Add a department",
-      "Add a role",
-      "Add an employee",
-      "Update an employee role",
-    ],
-  },
-]);
+inquirer
+  .prompt([
+    {
+      type: "list",
+      name: "action",
+      message: "What would you like to do?",
+      choices: [
+        "View all departments",
+        "View all roles",
+        "view all employees",
+        "Add a department",
+        "Add a role",
+        "Add an employee",
+        "Update an employee role",
+      ],
+    },
+  ])
+  .then((response) => {
+    switch (response.action) {
+      case "Add a department":
+        inquirer
+          .prompt([
+            {
+              type: "input",
+              name: "departmentName",
+              message: "Enter the name of the department you wish to add:",
+            },
+          ])
+          .then((answer) => {
+            console.log("ANSWER:", answer.departmentName);
+          });
+        break;
+
+      case "Add a role":
+        inquirer
+          .prompt([
+            {
+              type: "input",
+              name: "roleName",
+              message: "Enter the name of the role you wish to add:",
+            },
+            {
+              type: "input",
+              name: "salary",
+              message: "Enter the salary for this role:",
+            },
+            {
+              type: "input",
+              name: "departmentId",
+              message: "Enter the department ID for this role:",
+            },
+          ])
+          .then((answer) => {
+            console.log(
+              "ANSWERS:",
+              answer.roleName,
+              answer.salary,
+              answer.departmentId
+            );
+          });
+        break;
+
+      case "Add an employee":
+        inquirer
+          .prompt([
+            {
+              type: "input",
+              name: "firstName",
+              message: "Enter the employees first name:",
+            },
+            {
+              type: "input",
+              name: "lastName",
+              message: "Enter the employees lastName:",
+            },
+            {
+              type: "input",
+              name: "roleId",
+              message: "Enter the employees role ID:",
+            },
+            {
+              type: "input",
+              name: "managerId",
+              message: `Enter the employees manager ID if they have a manager, otherwise enter 'NULL':`,
+            },
+          ])
+          .then((answer) => {
+            console.log(
+              "ANSWERS:",
+              answer.firstName,
+              answer.lastName,
+              answer.roleId,
+              answer.managerId
+            );
+          });
+        break;
+
+      case "Update an employee role":
+        inquirer
+          .prompt([
+            {
+              type: "input",
+              name: "employeeId",
+              message: "Enter the ID of the employee you wish to update:",
+            },
+            {
+              type: "input",
+              name: "roleName",
+              message: "Enter the employees new role:",
+            },
+          ])
+          .then((answer) => {
+            console.log("ANSWERS:", answer.employeeId, answer.roleName);
+          });
+        break;
+
+      default:
+        Console.log("Invalid action");
+        break;
+    }
+  });
