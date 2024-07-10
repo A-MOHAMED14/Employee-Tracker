@@ -1,4 +1,18 @@
 const inquirer = require("inquirer");
+const { Pool } = require("pg");
+const SqlQueries = require("./assets/js/queries.js");
+
+// const sql = new SqlQueries();
+const sql = new SqlQueries();
+
+const pool = new Pool({
+  user: "postgres",
+  password: "code4funloop4ever!",
+  host: "localhost",
+  database: "employee_tracker_db",
+});
+
+pool.connect();
 
 inquirer
   .prompt([
@@ -9,7 +23,7 @@ inquirer
       choices: [
         "View all departments",
         "View all roles",
-        "view all employees",
+        "View all employees",
         "Add a department",
         "Add a role",
         "Add an employee",
