@@ -165,37 +165,78 @@ async function insertRole() {
     });
 }
 
-function insertEmployee() {
+async function insertEmployee() {
+  const result = await pool.query("SELECT title FROM role");
+  const allRoles = result.rows;
+
+  const rolesArr = [];
+  allRoles.forEach((role) => {
+    rolesArr.push(role.title);
+  });
+
+  const response = await pool.query(
+    "SELECT first_name || ' ' || last_name AS manager FROM employee WHERE manager_id IS NULL;"
+  );
+
+  const managersArr = [];
+
+  response.rows.forEach((row) => {
+    managersArr.push(row.manager);
+  });
+
   inquirer
     .prompt([
       {
         type: "input",
         name: "firstName",
-        message: "Enter the employees first name:",
+        message: "Enter the employee's first name:",
       },
       {
         type: "input",
         name: "lastName",
-        message: "Enter the employees lastName:",
+        message: "Enter the employee's lastName:",
       },
       {
-        type: "input",
-        name: "roleId",
-        message: "Enter the employees role ID:",
+        type: "list",
+        name: "roleName",
+        message: "What is the employee's role?",
+        choices: rolesArr,
       },
       {
-        type: "input",
-        name: "managerId",
-        message: `Enter the employees manager ID if they have a manager, otherwise enter 'NULL':`,
+        type: "list",
+        name: "managerName",
+        message: "Who is the employee's manager?",
+        choices: managersArr,
       },
     ])
-    .then((answer) => {
+    .then(async (answer) => {
+      const result = await pool.query("SELECT id from role WHERE title = $1", [
+        answer.roleName,
+      ]);
+
+      let role_id;
+
+      result.rows.forEach((row) => {
+        role_id = row.id;
+      });
+
+      const response = await pool.query(
+        "SELECT id FROM employee WHERE first_name || ' ' || last_name = $1",
+        [answer.managerName]
+      );
+
+      let manager_id;
+
+      response.rows.forEach((row) => {
+        manager_id = row.id;
+      });
+
       const query6 = sql.addEmployee();
       const newEmployee = [
         answer.firstName,
         answer.lastName,
-        answer.roleId,
-        answer.managerId,
+        role_id,
+        manager_id,
       ];
 
       pool.query(query6, newEmployee, (err) => {
