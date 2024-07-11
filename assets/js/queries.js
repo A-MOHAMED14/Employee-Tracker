@@ -26,7 +26,7 @@ class SqlQueries {
   }
 
   updateEmployee() {
-    return "UPDATE employee SET role = $1 WHERE id = $2";
+    return "UPDATE employee SET role_id = $1 WHERE id = $2";
   }
 }
 
