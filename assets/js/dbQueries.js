@@ -110,7 +110,15 @@ function insertDepartment() {
     });
 }
 
-function insertRole() {
+async function insertRole() {
+  const result = await pool.query("SELECT department.name FROM department");
+  const allDepartments = result.rows;
+
+  const departmentsArr = [];
+  allDepartments.forEach((department) => {
+    departmentsArr.push(department.name);
+  });
+
   inquirer
     .prompt([
       {
@@ -124,14 +132,28 @@ function insertRole() {
         message: "Enter the salary for this role:",
       },
       {
-        type: "name",
-        name: "departmentId",
-        message: "Enter the department ID for this role:",
+        type: "list",
+        name: "departmentName",
+        message: "Which department does the role belong to?",
+        choices: departmentsArr,
       },
     ])
-    .then((answer) => {
+    .then(async (answer) => {
+      const result = await pool.query(
+        "SELECT id FROM department WHERE name = $1",
+        [answer.departmentName]
+      );
+
+      let department_id;
+
+      result.rows.forEach((row) => {
+        department_id = row.id;
+      });
+
+      console.log(department_id);
+
       const query5 = sql.addRole();
-      const newRole = [answer.roleName, answer.salary, answer.departmentId];
+      const newRole = [answer.roleName, answer.salary, department_id];
 
       pool.query(query5, newRole, (err) => {
         if (err) {
