@@ -9,56 +9,60 @@ const {
   changeEmployeeRole,
 } = require("./assets/js/dbQueries.js");
 
-inquirer
-  .prompt([
-    {
-      type: "list",
-      name: "action",
-      message: "What Would You Like To Do?",
-      choices: [
-        "View All Departments",
-        "View All Roles",
-        "View All Employees",
-        "Add A Department",
-        "Add A Role",
-        "Add An Employee",
-        "Update An Employee Role",
-      ],
-    },
-  ])
-  .then((response) => {
-    switch (response.action) {
-      case "View All Departments":
-        showAllDepartments();
-        break;
+function start() {
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "action",
+        message: "What Would You Like To Do?",
+        choices: [
+          "View All Departments",
+          "View All Roles",
+          "View All Employees",
+          "Add A Department",
+          "Add A Role",
+          "Add An Employee",
+          "Update An Employee Role",
+        ],
+      },
+    ])
+    .then((response) => {
+      switch (response.action) {
+        case "View All Departments":
+          showAllDepartments(start);
+          break;
 
-      case "View all roles":
-        showAllRoles();
-        break;
+        case "View All Roles":
+          showAllRoles(start);
+          break;
 
-      case "View All Employees":
-        showAllEmployees();
-        break;
+        case "View All Employees":
+          showAllEmployees(start);
+          break;
 
-      case "Add A Department":
-        insertDepartment();
-        break;
+        case "Add A Department":
+          insertDepartment(start);
+          break;
 
-      case "Add A Role":
-        insertRole();
+        case "Add A Role":
+          insertRole(start);
 
-        break;
+          break;
 
-      case "Add An Employee":
-        insertEmployee();
-        break;
+        case "Add An Employee":
+          insertEmployee(start);
+          break;
 
-      case "Update An Employee Role":
-        changeEmployeeRole();
-        break;
+        case "Update An Employee Role":
+          changeEmployeeRole(start);
+          break;
 
-      default:
-        Console.log("Invalid action");
-        break;
-    }
-  });
+        default:
+          Console.log("Invalid action");
+          break;
+      }
+    });
+}
+
+start();
