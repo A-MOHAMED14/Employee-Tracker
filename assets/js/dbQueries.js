@@ -78,7 +78,7 @@ function showAllEmployees() {
           row.job_title,
           row.department,
           row.salary,
-          row.manager_name,
+          row.manager_name || "NULL",
         ]);
       });
 
