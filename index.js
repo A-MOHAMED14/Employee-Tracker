@@ -14,21 +14,21 @@ inquirer
     {
       type: "list",
       name: "action",
-      message: "What would you like to do?",
+      message: "What Would You Like To Do?",
       choices: [
-        "View all departments",
-        "View all roles",
-        "View all employees",
-        "Add a department",
-        "Add a role",
-        "Add an employee",
-        "Update an employee role",
+        "View All Departments",
+        "View All Roles",
+        "View All Employees",
+        "Add A Department",
+        "Add A Role",
+        "Add An Employee",
+        "Update An Employee Role",
       ],
     },
   ])
   .then((response) => {
     switch (response.action) {
-      case "View all departments":
+      case "View All Departments":
         showAllDepartments();
         break;
 
@@ -36,24 +36,24 @@ inquirer
         showAllRoles();
         break;
 
-      case "View all employees":
+      case "View All Employees":
         showAllEmployees();
         break;
 
-      case "Add a department":
+      case "Add A Department":
         insertDepartment();
         break;
 
-      case "Add a role":
+      case "Add A Role":
         insertRole();
 
         break;
 
-      case "Add an employee":
+      case "Add An Employee":
         insertEmployee();
         break;
 
-      case "Update an employee role":
+      case "Update An Employee Role":
         changeEmployeeRole();
         break;
 
