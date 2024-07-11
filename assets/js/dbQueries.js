@@ -14,7 +14,7 @@ const pool = new Pool({
 
 pool.connect();
 
-function showAllDepartments() {
+function showAllDepartments(callback) {
   const query1 = sql.viewDepartments();
   pool.query(query1, (err, result) => {
     if (err) {
@@ -31,10 +31,14 @@ function showAllDepartments() {
 
       console.log(table.toString());
     }
+
+    if (callback) {
+      callback();
+    }
   });
 }
 
-function showAllRoles() {
+function showAllRoles(callback) {
   const query2 = sql.viewRoles();
   pool.query(query2, (err, result) => {
     if (err) {
@@ -50,10 +54,14 @@ function showAllRoles() {
 
       console.log(table.toString());
     }
+
+    if (callback) {
+      callback();
+    }
   });
 }
 
-function showAllEmployees() {
+function showAllEmployees(callback) {
   const query3 = sql.viewEmployees();
   pool.query(query3, (err, result) => {
     if (err) {
@@ -85,10 +93,14 @@ function showAllEmployees() {
 
       console.log(table.toString());
     }
+
+    if (callback) {
+      callback();
+    }
   });
 }
 
-function insertDepartment() {
+function insertDepartment(callback) {
   inquirer
     .prompt([
       {
@@ -106,11 +118,15 @@ function insertDepartment() {
         } else {
           console.log(`Added ${answer.departmentName} to the database`);
         }
+
+        if (callback) {
+          callback();
+        }
       });
     });
 }
 
-async function insertRole() {
+async function insertRole(callback) {
   const result = await pool.query("SELECT department.name FROM department");
   const allDepartments = result.rows;
 
@@ -150,8 +166,6 @@ async function insertRole() {
         department_id = row.id;
       });
 
-      console.log(department_id);
-
       const query5 = sql.addRole();
       const newRole = [answer.roleName, answer.salary, department_id];
 
@@ -161,11 +175,15 @@ async function insertRole() {
         } else {
           console.log(`Added ${answer.roleName} to the database`);
         }
+
+        if (callback) {
+          callback();
+        }
       });
     });
 }
 
-async function insertEmployee() {
+async function insertEmployee(callback) {
   const result = await pool.query("SELECT title FROM role");
   const allRoles = result.rows;
 
@@ -247,11 +265,15 @@ async function insertEmployee() {
             `Added ${answer.firstName} ${answer.lastName} to the database`
           );
         }
+
+        if (callback) {
+          callback();
+        }
       });
     });
 }
 
-async function changeEmployeeRole() {
+async function changeEmployeeRole(callback) {
   const result = await pool.query(
     "SELECT first_name || ' ' || last_name AS name FROM employee"
   );
@@ -316,6 +338,10 @@ async function changeEmployeeRole() {
           console.error(err);
         } else {
           console.log(`Updated employee's role`);
+        }
+
+        if (callback) {
+          callback();
         }
       });
     });
