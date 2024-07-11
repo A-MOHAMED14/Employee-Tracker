@@ -251,23 +251,65 @@ async function insertEmployee() {
     });
 }
 
-function changeEmployeeRole() {
+async function changeEmployeeRole() {
+  const result = await pool.query(
+    "SELECT first_name || ' ' || last_name AS name FROM employee"
+  );
+
+  const namesArr = [];
+
+  result.rows.forEach((row) => {
+    namesArr.push(row.name);
+  });
+
+  const response = await pool.query("SELECT title FROM role");
+
+  const jobTitlesArr = [];
+
+  response.rows.forEach((row) => {
+    jobTitlesArr.push(row.title);
+  });
+
   inquirer
     .prompt([
       {
-        type: "input",
-        name: "employeeId",
-        message: "Enter the ID of the employee you wish to update:",
+        type: "list",
+        name: "employeeName",
+        message: "Which employee's role do you want to update?",
+        choices: namesArr,
       },
       {
-        type: "input",
-        name: "roleName",
-        message: "Enter the employees new role:",
+        type: "list",
+        name: "roleTitle",
+        message: "Which role do you want to assign the selected employee?",
+        choices: jobTitlesArr,
       },
     ])
-    .then((answer) => {
+    .then(async (answer) => {
+      const result = await pool.query(
+        "SELECT id FROM employee WHERE first_name || ' ' || last_name = $1",
+        [answer.employeeName]
+      );
+
+      let employee_id;
+
+      result.rows.forEach((row) => {
+        employee_id = row.id;
+      });
+
+      const response = await pool.query(
+        "SELECT id FROM role WHERE title = $1",
+        [answer.roleTitle]
+      );
+
+      let role_id;
+
+      response.rows.forEach((row) => {
+        role_id = row.id;
+      });
+
       const query7 = sql.updateEmployee();
-      const updateData = [answer.employeeId, answer.roleName];
+      const updateData = [role_id, employee_id];
 
       pool.query(query7, updateData, (err) => {
         if (err) {
