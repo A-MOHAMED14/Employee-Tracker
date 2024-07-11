@@ -35,3 +35,28 @@ npm install
 ```sh
 node index.js
 ```
+
+## Contributing 🤝
+
+1. Fork the repository.
+2. Create a New Branch:
+
+```sh
+git checkout -b feature/your-feature-name
+```
+
+3. Make your changes.
+
+4. Commit Your Changes:
+
+```sh
+git commit -m "Descriptive message about your changes"
+```
+
+5. Push to the Branch:
+
+```sh
+git push origin feature/your-feature-name
+```
+
+6. Open a Pull Request.
