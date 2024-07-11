@@ -1,3 +1,4 @@
+const inquirer = require("inquirer");
 const { Pool } = require("pg");
 const SqlQueries = require("./queries.js");
 const Table = require("cli-table3");
